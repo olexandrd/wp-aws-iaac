@@ -12,3 +12,10 @@ variable "ecs_sg_id" {
   description = "Security Group ID that allows access to EFS"
   type        = string
 }
+
+variable "vpc_id" {}
+
+variable "private_subnets" {
+  type = list(string)
+}
+

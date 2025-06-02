@@ -90,6 +90,32 @@ resource "aws_security_group" "nat_sg" {
   }
 }
 
+resource "aws_iam_role" "ec2_instance_role" {
+  name               = "${var.project_name}-ec2-role"
+  assume_role_policy = data.aws_iam_policy_document.ec2_assume.json
+  # інші параметри
+}
+
+data "aws_iam_policy_document" "ec2_assume" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "ssm" {
+  role       = aws_iam_role.ec2_instance_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "${var.project_name}-ec2-profile"
+  role = aws_iam_role.ec2_instance_role.name
+}
+
 # 3.3) Сам NAT Instance (t4g.nano) у першому публічному сабнеті
 resource "aws_instance" "nat_instance" {
   ami                         = data.aws_ami.nat_amzn2_arm64.id
@@ -98,6 +124,7 @@ resource "aws_instance" "nat_instance" {
   associate_public_ip_address = true
   source_dest_check           = false
   vpc_security_group_ids      = [aws_security_group.nat_sg.id]
+  iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
 
   # Налаштовуємо IP forwarding та маскараду
   user_data = <<-EOF

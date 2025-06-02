@@ -25,6 +25,11 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_attach" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
+resource "aws_iam_role_policy_attachment" "ssm" {
+  role       = aws_iam_role.ecs_instance.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 # IAM Instance Profile for the Launch Template
 resource "aws_iam_instance_profile" "ecs_instance_profile" {
   name = "${var.project_name}-ecs-instance-profile"
@@ -62,7 +67,7 @@ resource "aws_autoscaling_group" "ecs_asg" {
   desired_capacity    = 1
   min_size            = 1
   max_size            = 3
-  vpc_zone_identifier = var.vpc_public_subnets
+  vpc_zone_identifier = var.vpc_private_subnets
 
   mixed_instances_policy {
     launch_template {
@@ -85,6 +90,8 @@ resource "aws_autoscaling_group" "ecs_asg" {
   }
 
   lifecycle {
-    create_before_destroy = true
+    create_before_destroy = false
+
   }
 }
+
