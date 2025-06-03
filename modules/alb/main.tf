@@ -13,11 +13,12 @@ resource "aws_lb" "this" {
 
 # Create a Target Group for WordPress tasks
 resource "aws_lb_target_group" "wordpress" {
-  name        = "${var.project_name}-tg-wp"
-  port        = var.target_group_port
-  protocol    = var.target_group_protocol
-  vpc_id      = var.vpc_id
-  target_type = "ip"
+  name                 = "${var.project_name}-tg-wp"
+  port                 = var.target_group_port
+  protocol             = var.target_group_protocol
+  vpc_id               = var.vpc_id
+  target_type          = "ip"
+  deregistration_delay = 30
 
   health_check {
     path                = "/"

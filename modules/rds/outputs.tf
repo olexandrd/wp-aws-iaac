@@ -7,3 +7,8 @@ output "ssm_password_name" {
   description = "Name of the SSM parameter holding the RDS password"
   value       = aws_ssm_parameter.rds_password.name
 }
+
+output "aws_ssm_parameter_arn" {
+  description = "ARN of the SSM parameter holding the RDS password"
+  value       = aws_ssm_parameter.rds_password.arn
+}

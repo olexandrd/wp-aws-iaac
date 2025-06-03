@@ -12,3 +12,8 @@ variable "ecs_sg_id" {
   description = "Security Group ID to attach to EC2 instances"
   type        = string
 }
+
+variable "vpc_private_subnets" {
+  description = "List of private subnet IDs"
+  type        = list(string)
+}
