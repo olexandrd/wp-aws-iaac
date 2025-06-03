@@ -18,3 +18,16 @@ variable "alert_email" {
   description = "Email for CloudWatch alerts subscription"
   type        = string
 }
+
+variable "autoscale_min_capacity" {
+  description = "Minimum number of instances in the Auto Scaling group"
+  type        = number
+  default     = 1
+
+}
+
+variable "autoscale_max_capacity" {
+  description = "Maximum number of instances in the Auto Scaling group"
+  type        = number
+  default     = 3
+}

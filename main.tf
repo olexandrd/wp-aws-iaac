@@ -55,6 +55,8 @@ module "ecs_task" {
   cluster_name                     = module.ecs.cluster_name
   target_group_arn                 = module.alb.target_group_arn
   aws_ecs_task_definition_arn      = module.ecs.asg_arn
+  autoscale_max_capacity           = var.autoscale_max_capacity
+  autoscale_min_capacity           = var.autoscale_min_capacity
   depends_on = [
     module.ecs_init
   ]
@@ -62,11 +64,13 @@ module "ecs_task" {
 
 # 5) ECS (cluster + EC2 workers + IAM for instances)
 module "ecs" {
-  source              = "./modules/ecs"
-  project_name        = var.project_name
-  vpc_public_subnets  = module.network.public_subnets
-  ecs_sg_id           = module.network.ecs_sg_id
-  vpc_private_subnets = module.network.private_subnets
+  source                 = "./modules/ecs"
+  project_name           = var.project_name
+  vpc_public_subnets     = module.network.public_subnets
+  ecs_sg_id              = module.network.ecs_sg_id
+  vpc_private_subnets    = module.network.private_subnets
+  autoscale_max_capacity = var.autoscale_max_capacity
+  autoscale_min_capacity = var.autoscale_min_capacity
   depends_on = [
     module.network.nat_instance_id,
     module.alb

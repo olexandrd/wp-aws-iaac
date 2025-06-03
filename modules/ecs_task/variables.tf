@@ -59,3 +59,13 @@ variable "aws_ecs_task_definition_arn" {
   description = "ARN ECS Task Definition for WordPress"
   type        = string
 }
+
+variable "autoscale_max_capacity" {
+  type    = number
+  default = 5
+}
+
+variable "autoscale_min_capacity" {
+  type    = number
+  default = 1
+}

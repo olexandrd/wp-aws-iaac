@@ -64,9 +64,9 @@ resource "aws_launch_template" "ecs_lt" {
 # Auto Scaling Group with mixed On-Demand + Spot capacity
 resource "aws_autoscaling_group" "ecs_asg" {
   name                = "${var.project_name}-asg"
-  desired_capacity    = 1
-  min_size            = 1
-  max_size            = 3
+  desired_capacity    = var.autoscale_min_capacity
+  min_size            = var.autoscale_min_capacity
+  max_size            = var.autoscale_max_capacity
   vpc_zone_identifier = var.vpc_private_subnets
   default_cooldown    = 60
 

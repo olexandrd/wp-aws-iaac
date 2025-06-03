@@ -17,3 +17,13 @@ variable "vpc_private_subnets" {
   description = "List of private subnet IDs"
   type        = list(string)
 }
+
+variable "autoscale_max_capacity" {
+  type    = number
+  default = 5
+}
+
+variable "autoscale_min_capacity" {
+  type    = number
+  default = 1
+}
