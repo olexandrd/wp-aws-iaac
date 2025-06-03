@@ -87,3 +87,15 @@ module "alb" {
     module.network.nat_instance_id,
   ]
 }
+
+# 7) CloudWatch 
+
+module "cloudwatch_alert" {
+  source           = "./modules/cloudwatch_alert"
+  email            = var.alert_email
+  metric_namespace = "AWS/ECS"
+  alarm_dimensions = {
+    ClusterName = module.ecs.cluster_name
+    ServiceName = module.ecs_task.service_name
+  }
+}
