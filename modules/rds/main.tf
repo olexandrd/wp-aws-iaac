@@ -51,21 +51,22 @@ module "db" {
   source  = "terraform-aws-modules/rds/aws"
   version = "6.3.0"
 
-  identifier             = "${var.project_name}-db"
-  engine                 = "mysql"
-  major_engine_version   = "8.0"
-  family                 = "mysql8.0"
-  instance_class         = "db.t4g.micro"
-  allocated_storage      = 20
-  storage_type           = "gp3"
-  db_name                = "wordpress"
-  username               = "admin"
-  password               = aws_ssm_parameter.rds_password.value
-  skip_final_snapshot    = true
-  publicly_accessible    = false
-  db_subnet_group_name   = aws_db_subnet_group.this.name
-  subnet_ids             = var.vpc_private_subnets
-  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+  identifier                  = "${var.project_name}-db"
+  engine                      = "mysql"
+  major_engine_version        = "8.0"
+  family                      = "mysql8.0"
+  instance_class              = "db.t4g.micro"
+  allocated_storage           = 20
+  storage_type                = "gp3"
+  db_name                     = "wordpress"
+  username                    = "admin"
+  password                    = random_password.rds.result
+  manage_master_user_password = false
+  skip_final_snapshot         = true
+  publicly_accessible         = false
+  db_subnet_group_name        = aws_db_subnet_group.this.name
+  subnet_ids                  = var.vpc_private_subnets
+  vpc_security_group_ids      = [aws_security_group.rds_sg.id]
 
   tags = {
     Name = "${var.project_name}-db"
