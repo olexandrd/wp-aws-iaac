@@ -34,7 +34,7 @@ resource "aws_db_subnet_group" "this" {
 
 resource "random_password" "rds" {
   length  = 16
-  special = true
+  special = false
 }
 
 resource "aws_ssm_parameter" "rds_password" {

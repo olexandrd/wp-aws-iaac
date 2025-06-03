@@ -133,6 +133,5 @@ resource "aws_route" "private_to_nat" {
   count                  = length(module.vpc.private_route_table_ids)
   route_table_id         = module.vpc.private_route_table_ids[count.index]
   destination_cidr_block = "0.0.0.0/0"
-
-  network_interface_id = local.nat_eni_id
+  network_interface_id   = local.nat_eni_id
 }
