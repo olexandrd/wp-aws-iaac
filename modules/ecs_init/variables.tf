@@ -4,12 +4,12 @@ variable "project_name" {
 }
 
 variable "ecr_repo_url" {
-  description = "URL образу WordPress (ECR або Public)"
+  description = "Docker image URL for the ECS task"
   type        = string
 }
 
 variable "efs_file_system_id" {
-  description = "ID EFS, куди копіювати файли"
+  description = "EFS File System ID for WordPress data storage"
   type        = string
 }
 

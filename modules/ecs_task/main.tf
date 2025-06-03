@@ -114,15 +114,10 @@ resource "aws_ecs_task_definition" "wordpress" {
     }
   }
 }
-
-
 resource "aws_ecs_capacity_provider" "ecs_asg_cp" {
   name = "${var.project_name}-ecs-cp"
-
-
   auto_scaling_group_provider {
     auto_scaling_group_arn = var.aws_ecs_task_definition_arn
-
     managed_scaling {
       status                    = "ENABLED"
       target_capacity           = 75

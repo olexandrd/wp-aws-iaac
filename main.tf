@@ -5,7 +5,7 @@ module "network" {
   aws_region   = var.aws_region
 }
 
-# 3) EFS (file system + mount targets)
+# 2) EFS (file system + mount targets)
 module "efs" {
   source              = "./modules/efs"
   project_name        = var.project_name
@@ -18,7 +18,7 @@ module "efs" {
   ]
 }
 
-# 4) RDS (password in SSM + RDS instance)
+# 3) RDS (password in SSM + RDS instance)
 module "rds" {
   source              = "./modules/rds"
   project_name        = var.project_name
@@ -29,7 +29,7 @@ module "rds" {
   ]
 }
 
-# 5) ECS Task Definitions
+# 4) ECS Task Definitions
 
 module "ecs_init" {
   source             = "./modules/ecs_init"
@@ -61,7 +61,7 @@ module "ecs_task" {
   ]
 }
 
-# 6) ECS (cluster + EC2 workers + IAM for instances)
+# 5) ECS (cluster + EC2 workers + IAM for instances)
 module "ecs" {
   source              = "./modules/ecs"
   project_name        = var.project_name
@@ -74,7 +74,7 @@ module "ecs" {
   ]
 }
 
-# 7) ALB (load balancer + target group + listener)
+# 6) ALB (load balancer + target group + listener)
 module "alb" {
   source                = "./modules/alb"
   project_name          = var.project_name

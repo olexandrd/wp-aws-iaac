@@ -48,9 +48,8 @@ resource "aws_ssm_parameter" "rds_password" {
 }
 
 module "db" {
-  source  = "terraform-aws-modules/rds/aws"
-  version = "6.3.0"
-
+  source                      = "terraform-aws-modules/rds/aws"
+  version                     = "6.3.0"
   identifier                  = "${var.project_name}-db"
   engine                      = "mysql"
   major_engine_version        = "8.0"

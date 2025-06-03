@@ -4,5 +4,6 @@ output "file_system_id" {
 }
 
 output "efs_sg_id" {
-  value = aws_security_group.efs.id
+  description = "Security Group ID for the EFS file system"
+  value       = aws_security_group.efs.id
 }

@@ -1,6 +1,3 @@
-# ----------------------------------------------------
-# 1) Create VPC + public & private subnets (no NAT Gateway)
-# ----------------------------------------------------
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.1.1"
@@ -21,9 +18,6 @@ module "vpc" {
   }
 }
 
-# ----------------------------------------------------
-# 2) Security Group for ECS tasks (як раніше)
-# ----------------------------------------------------
 resource "aws_security_group" "ecs_service" {
   name        = "${var.project_name}-ecs-sg"
   description = "Security group for ECS tasks"
@@ -48,11 +42,6 @@ resource "aws_security_group" "ecs_service" {
   }
 }
 
-# ----------------------------------------------------
-# 3) NAT Instance: EC2 t4g.nano у публічній підмережі
-# ----------------------------------------------------
-
-# 3.1) Знайти останній Amazon Linux 2 ARM64 AMI
 data "aws_ami" "nat_amzn2_arm64" {
   most_recent = true
   owners      = ["amazon"]
@@ -63,21 +52,16 @@ data "aws_ami" "nat_amzn2_arm64" {
   }
 }
 
-# 3.2) Security Group для NAT Instance
 resource "aws_security_group" "nat_sg" {
   name        = "${var.project_name}-nat-sg"
   description = "Security group for NAT instance"
   vpc_id      = module.vpc.vpc_id
-
-  # Дозволяємо весь вихідний трафік з NAT
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  # Дозволяємо весь трафік із приватних підмереж до NAT
   ingress {
     from_port   = 0
     to_port     = 0
@@ -115,8 +99,6 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   name = "${var.project_name}-ec2-profile"
   role = aws_iam_role.ec2_instance_role.name
 }
-
-# 3.3) Сам NAT Instance (t4g.nano) у першому публічному сабнеті
 resource "aws_instance" "nat_instance" {
   ami                         = data.aws_ami.nat_amzn2_arm64.id
   instance_type               = "t4g.nano"
@@ -125,9 +107,7 @@ resource "aws_instance" "nat_instance" {
   source_dest_check           = false
   vpc_security_group_ids      = [aws_security_group.nat_sg.id]
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
-
-  # Налаштовуємо IP forwarding та маскараду
-  user_data = <<-EOF
+  user_data                   = <<-EOF
     #!/bin/bash
     yum update -y
     yum install -y iptables-services
@@ -144,11 +124,6 @@ resource "aws_instance" "nat_instance" {
     Name = "${var.project_name}-nat-instance"
   }
 }
-
-# ----------------------------------------------------
-# 4) Route Table updates: прокладення приватних сабнетів
-#    через NAT Instance (через instance_id)
-# ----------------------------------------------------
 
 locals {
   nat_eni_id = aws_instance.nat_instance.primary_network_interface_id

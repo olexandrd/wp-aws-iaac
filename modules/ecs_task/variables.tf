@@ -1,30 +1,30 @@
 variable "project_name" {
-  description = "Ім’я проєкту"
+  description = "Project name"
   type        = string
 }
 
 variable "ecr_repo_url" {
-  description = "URL репозиторію ECR (для образу WordPress)"
+  description = "Docker image URL"
   type        = string
 }
 
 variable "db_address" {
-  description = "Адреса RDS для коннекту з WordPress"
+  description = "RDS endpoint"
   type        = string
 }
 
 variable "ssm_password_name" {
-  description = "SSM Parameter Name, звідки ECS-таска дістає пароль"
+  description = "SSM Parameter Name, for ECS task to get the password"
   type        = string
 }
 
 variable "aws_ssm_parameter_arn" {
-  description = "ARN SSM Parameter, звідки ECS-таска дістає пароль"
+  description = "ARN SSM Parameter, for ECS task to get the password"
   type        = string
 }
 
 variable "efs_file_system_id" {
-  description = "ID EFS для монтування"
+  description = "ID EFS for WordPress data storage"
   type        = string
 }
 
@@ -39,13 +39,13 @@ variable "ecs_sg_id" {
 }
 
 variable "aws_ecs_init_task_definition_arn" {
-  description = "ARN ECS Task Definition для ініціалізації WordPress"
+  description = "ARN ECS Task Definition for initialization tasks"
   type        = string
 }
 
 
 variable "cluster_name" {
-  description = "Назва ECS кластеру, до якого буде додана таска"
+  description = "ECS Cluster Name"
   type        = string
 
 }

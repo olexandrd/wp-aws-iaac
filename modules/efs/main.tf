@@ -3,12 +3,11 @@ resource "aws_security_group" "efs" {
   description = "Allow NFS from ECS only"
   vpc_id      = var.vpc_id
 
-  # Відкриваємо NFS тільки для ECS Security Group
   ingress {
     from_port       = 2049
     to_port         = 2049
     protocol        = "tcp"
-    security_groups = [var.ecs_sg_id] # ← ID ECS SG з модуля ECS/Network
+    security_groups = [var.ecs_sg_id]
     description     = "Allow NFS from ECS only"
   }
 

@@ -13,7 +13,6 @@ resource "aws_iam_role" "ecs_init_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_init_assume.json
 }
 
-# Прикріплюємо мінімальну політику, щоби таск мав дозвіл монтувати EFS
 resource "aws_iam_role_policy_attachment" "ecs_init_attach" {
   role       = aws_iam_role.ecs_init_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
