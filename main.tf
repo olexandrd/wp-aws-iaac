@@ -12,7 +12,6 @@ module "efs" {
   vpc_private_subnets = module.network.private_subnets
   ecs_sg_id           = module.network.ecs_sg_id
   vpc_id              = module.network.vpc_id
-  private_subnets     = module.network.private_subnets
   depends_on = [
     module.network.nat_instance_id,
   ]
