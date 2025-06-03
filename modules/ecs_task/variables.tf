@@ -56,6 +56,6 @@ variable "target_group_arn" {
 }
 
 variable "aws_ecs_task_definition_arn" {
-  description = "ARN ECS Task Definition для WordPress"
+  description = "ARN ECS Task Definition for WordPress"
   type        = string
 }

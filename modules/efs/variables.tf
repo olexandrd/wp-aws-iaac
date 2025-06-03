@@ -13,7 +13,10 @@ variable "ecs_sg_id" {
   type        = string
 }
 
-variable "vpc_id" {}
+variable "vpc_id" {
+  description = "The ID of the VPC where resources will be created"
+  type        = string
+}
 
 variable "private_subnets" {
   type = list(string)
