@@ -68,6 +68,7 @@ resource "aws_autoscaling_group" "ecs_asg" {
   min_size            = 1
   max_size            = 3
   vpc_zone_identifier = var.vpc_private_subnets
+  default_cooldown    = 60
 
   mixed_instances_policy {
     launch_template {
@@ -91,7 +92,6 @@ resource "aws_autoscaling_group" "ecs_asg" {
 
   lifecycle {
     create_before_destroy = false
-
   }
 }
 
